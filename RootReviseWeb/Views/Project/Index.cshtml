@@ -1,0 +1,51 @@
+﻿@model List<Project>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+   <div class="pagetitle">
+      <h1>Project List</h1>
+   </div>
+   <a asp-controller="Project" asp-action="Upsert" class="btn btn-primary">
+      <i class="bi bi-plus-circle me-2"></i>Create a New Project
+   </a>
+
+</div>
+
+
+<section class="section">
+   <div class="row">
+      <div class="col-lg-12">
+
+         <div class="card">
+            <div class="card-body">
+
+               <h5 class="card-title">Project Table</h5>
+               <table id="issueTable" style="width: 100%">
+                  <thead>
+                     <tr>
+                        <th>Title</th>
+                        <th></th>
+                     </tr>
+                  </thead>
+
+                  <tbody>
+                     @foreach (var project in Model) {
+                        <tr>
+                           <td>@project.Name</td>
+                           <td>
+                              <a class="btn btn-primary" asp-controller="Project" asp-action="Upsert" asp-route-projectId="@project.ProjectId">Edit</a>
+                              <a class="btn btn-danger" asp-controller="Project" asp-action="Delete">Delete</a>
+                           </td>
+                        </tr>
+                     }
+                  </tbody>
+               </table>
+
+            </div>
+         </div>
+
+      </div>
+   </div>
+</section>
+
+@section Scripts {
+}

@@ -1,0 +1,79 @@
+﻿@model IssueVM
+
+<div class="d-flex justify-content-center align-items-center mb-4">
+   <div class="pagetitle">
+      @if (Model.Issue.IssueId == 0) {
+         <h1>Create a New Issue</h1>
+      } else {
+         <h1>Issue Details</h1>
+      }
+   </div>
+
+</div>
+
+
+<section class="section">
+   <div class="row">
+      <div class="col-lg-12">
+
+         <div class="card">
+            <div class="card-body">
+
+               <form method="post" class="row g-3">
+                  <input asp-for="Issue.IssueId" hidden />
+                  @if (Model.Issue.IssueId != 0) {
+                     <input asp-for="Issue.DateReported" hidden />
+                     <div class="card-title">
+                        Date Reported:
+                        @Model.Issue.DateReported
+                     </div>
+                  }
+                  <div class="col-12">
+                     <label asp-for="Issue.Title" class="form-label"></label>
+                     <input asp-for="Issue.Title" type="text" class="form-control" />
+                     <span asp-validation-for="Issue.Title" class="text-danger"></span>
+                  </div>
+                  <div class="col-12">
+                     <label asp-for="Issue.ProjectId"></label>
+                     <select asp-for="Issue.ProjectId" asp-items="@Model.ProjectList" class="form-select">
+                        <option value="" disabled selected>Select Status</option>
+                     </select>
+                  </div>
+                  <div class="col-12">
+                     <label asp-for="Issue.Description" class="form-label"></label>
+                     <input asp-for="Issue.Description" type="text" class="form-control" />
+                     <span asp-validation-for="Issue.Description" class="text-danger"></span>
+                  </div>
+
+                  <div class="d-flex col-12">
+
+                     @if (Model.Issue.IssueId == 0) {
+                        <button type="submit" asp-action="Upsert" class="btn btn-primary me-3">
+                           Submit
+                        </button>
+                     } else {
+                        <button type="submit" asp-action="Upsert" class="btn btn-primary me-3">
+                           Update
+                        </button>
+                     }
+                     <a asp-controller="Issue" asp-action="Index" class="btn btn-secondary">
+                        Back
+                     </a>
+
+                     @if (Model.Issue.IssueId != 0) {
+                        <button type="button" onclick="DeleteIssue('/issue/delete?id=@Model.Issue.IssueId')" class="btn btn-danger d-block ms-auto">Delete</button>
+                     }
+
+                  </div>
+               </form>
+
+            </div>
+         </div>
+
+      </div>
+   </div>
+</section>
+
+@section Scripts {
+   <script src="~/js/issue.js"></script>
+}
