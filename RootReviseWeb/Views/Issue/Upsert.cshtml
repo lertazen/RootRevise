@@ -36,7 +36,7 @@
                   <div class="col-12">
                      <label asp-for="Issue.ProjectId"></label>
                      <select asp-for="Issue.ProjectId" asp-items="@Model.ProjectList" class="form-select">
-                        <option value="" disabled selected>Select Status</option>
+                        <option value="" disabled selected>Select Project</option>
                      </select>
                   </div>
                   <div class="col-12">
@@ -59,10 +59,6 @@
                      <a asp-controller="Issue" asp-action="Index" class="btn btn-secondary">
                         Back
                      </a>
-
-                     @if (Model.Issue.IssueId != 0) {
-                        <button type="button" onclick="DeleteIssue('/issue/delete?id=@Model.Issue.IssueId')" class="btn btn-danger d-block ms-auto">Delete</button>
-                     }
 
                   </div>
                </form>

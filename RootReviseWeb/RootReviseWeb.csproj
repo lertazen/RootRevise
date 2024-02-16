@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RootRevise.DataAccess\RootRevise.DataAccess.csproj" />
+    <ProjectReference Include="..\RootRevise.Utility\RootRevise.Utility.csproj" />
   </ItemGroup>
 
 </Project>

@@ -38,6 +38,7 @@ namespace RootReviseWeb.Controllers {
          if (ModelState.IsValid) {
             if (issueVM.Issue.IssueId == 0) {
                issueVM.Issue.DateReported = DateTime.Now;
+               issueVM.Issue.Priority = PriorityLevel.Medium; 
                _unitOfWork.IssueRepository.Add(issueVM.Issue);
                TempData.Add("success", "The issue has been created successfully");
             } else {
