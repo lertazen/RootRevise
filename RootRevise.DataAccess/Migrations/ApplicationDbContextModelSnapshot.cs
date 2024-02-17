@@ -167,12 +167,10 @@ namespace RootRevise.DataAccess.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -209,12 +207,10 @@ namespace RootRevise.DataAccess.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -245,7 +241,7 @@ namespace RootRevise.DataAccess.Migrations
                     b.Property<DateTime?>("DueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Priority")
+                    b.Property<int>("PriorityId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProjectId")
@@ -254,7 +250,7 @@ namespace RootRevise.DataAccess.Migrations
                     b.Property<int>("ReporterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("StatusId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -263,7 +259,11 @@ namespace RootRevise.DataAccess.Migrations
 
                     b.HasKey("IssueId");
 
+                    b.HasIndex("PriorityId");
+
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("StatusId");
 
                     b.ToTable("Issues");
 
@@ -272,14 +272,48 @@ namespace RootRevise.DataAccess.Migrations
                         {
                             IssueId = 1,
                             AssigneeId = 1,
-                            DateReported = new DateTime(2024, 2, 15, 13, 11, 0, 601, DateTimeKind.Local).AddTicks(654),
+                            DateReported = new DateTime(2024, 2, 17, 11, 17, 32, 625, DateTimeKind.Local).AddTicks(4644),
                             Description = "This is a test issue",
-                            DueDate = new DateTime(2024, 2, 25, 13, 11, 0, 601, DateTimeKind.Local).AddTicks(707),
-                            Priority = 2,
+                            DueDate = new DateTime(2024, 2, 27, 11, 17, 32, 625, DateTimeKind.Local).AddTicks(4702),
+                            PriorityId = 1,
                             ProjectId = 1,
                             ReporterId = 1,
-                            Status = 0,
+                            StatusId = 1,
                             Title = "Test"
+                        });
+                });
+
+            modelBuilder.Entity("RootRevise.Models.Priority", b =>
+                {
+                    b.Property<int>("PriorityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PriorityId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PriorityId");
+
+                    b.ToTable("Prioritys");
+
+                    b.HasData(
+                        new
+                        {
+                            PriorityId = 1,
+                            Name = "Low"
+                        },
+                        new
+                        {
+                            PriorityId = 2,
+                            Name = "Medium"
+                        },
+                        new
+                        {
+                            PriorityId = 3,
+                            Name = "High"
                         });
                 });
 
@@ -304,6 +338,40 @@ namespace RootRevise.DataAccess.Migrations
                         {
                             ProjectId = 1,
                             Name = "Testing Project"
+                        });
+                });
+
+            modelBuilder.Entity("RootRevise.Models.Status", b =>
+                {
+                    b.Property<int>("StatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StatusId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StatusId");
+
+                    b.ToTable("Statuss");
+
+                    b.HasData(
+                        new
+                        {
+                            StatusId = 1,
+                            Name = "Open"
+                        },
+                        new
+                        {
+                            StatusId = 2,
+                            Name = "InProgress"
+                        },
+                        new
+                        {
+                            StatusId = 3,
+                            Name = "Closed"
                         });
                 });
 
@@ -360,13 +428,29 @@ namespace RootRevise.DataAccess.Migrations
 
             modelBuilder.Entity("RootRevise.Models.Issue", b =>
                 {
+                    b.HasOne("RootRevise.Models.Priority", "Priority")
+                        .WithMany()
+                        .HasForeignKey("PriorityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RootRevise.Models.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RootRevise.Models.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Priority");
+
                     b.Navigation("Project");
+
+                    b.Navigation("Status");
                 });
 #pragma warning restore 612, 618
         }

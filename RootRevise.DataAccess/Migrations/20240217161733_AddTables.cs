@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace RootRevise.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class InitializeDB : Migration
+    public partial class AddTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,6 +53,19 @@ namespace RootRevise.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Prioritys",
+                columns: table => new
+                {
+                    PriorityId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Prioritys", x => x.PriorityId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
@@ -61,6 +76,19 @@ namespace RootRevise.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Projects", x => x.ProjectId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Statuss",
+                columns: table => new
+                {
+                    StatusId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Statuss", x => x.StatusId);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,8 +137,8 @@ namespace RootRevise.DataAccess.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -154,8 +182,8 @@ namespace RootRevise.DataAccess.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -177,23 +205,45 @@ namespace RootRevise.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    Priority = table.Column<int>(type: "int", nullable: false),
                     DateReported = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ReporterId = table.Column<int>(type: "int", nullable: false),
                     AssigneeId = table.Column<int>(type: "int", nullable: false),
+                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    PriorityId = table.Column<int>(type: "int", nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Issues", x => x.IssueId);
                     table.ForeignKey(
+                        name: "FK_Issues_Prioritys_PriorityId",
+                        column: x => x.PriorityId,
+                        principalTable: "Prioritys",
+                        principalColumn: "PriorityId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Issues_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Issues_Statuss_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "Statuss",
+                        principalColumn: "StatusId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Prioritys",
+                columns: new[] { "PriorityId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Low" },
+                    { 2, "Medium" },
+                    { 3, "High" }
                 });
 
             migrationBuilder.InsertData(
@@ -202,9 +252,19 @@ namespace RootRevise.DataAccess.Migrations
                 values: new object[] { 1, "Testing Project" });
 
             migrationBuilder.InsertData(
+                table: "Statuss",
+                columns: new[] { "StatusId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Open" },
+                    { 2, "InProgress" },
+                    { 3, "Closed" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Issues",
-                columns: new[] { "IssueId", "AssigneeId", "DateReported", "Description", "DueDate", "Priority", "ProjectId", "ReporterId", "Status", "Title" },
-                values: new object[] { 1, 1, new DateTime(2024, 2, 15, 13, 11, 0, 601, DateTimeKind.Local).AddTicks(654), "This is a test issue", new DateTime(2024, 2, 25, 13, 11, 0, 601, DateTimeKind.Local).AddTicks(707), 2, 1, 1, 0, "Test" });
+                columns: new[] { "IssueId", "AssigneeId", "DateReported", "Description", "DueDate", "PriorityId", "ProjectId", "ReporterId", "StatusId", "Title" },
+                values: new object[] { 1, 1, new DateTime(2024, 2, 17, 11, 17, 32, 625, DateTimeKind.Local).AddTicks(4644), "This is a test issue", new DateTime(2024, 2, 27, 11, 17, 32, 625, DateTimeKind.Local).AddTicks(4702), 1, 1, 1, 1, "Test" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -246,9 +306,19 @@ namespace RootRevise.DataAccess.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Issues_PriorityId",
+                table: "Issues",
+                column: "PriorityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Issues_ProjectId",
                 table: "Issues",
                 column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Issues_StatusId",
+                table: "Issues",
+                column: "StatusId");
         }
 
         /// <inheritdoc />
@@ -279,7 +349,13 @@ namespace RootRevise.DataAccess.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Prioritys");
+
+            migrationBuilder.DropTable(
                 name: "Projects");
+
+            migrationBuilder.DropTable(
+                name: "Statuss");
         }
     }
 }

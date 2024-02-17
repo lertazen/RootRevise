@@ -22,16 +22,10 @@ function LoadDataTable() {
       "columns": [
          { data: 'title' },
          {
-            data: 'status',
-            "render": function (data) {
-               return IssueStatus[data];
-            }
+            data: 'status.name',
          },
          {
-            data: 'priority',
-            "render": function (data) {
-               return PriorityLevel[data];
-            }
+            data: 'priority.name',
          },
          { data: 'project.name' },
          {
@@ -57,14 +51,25 @@ function LoadDataTable() {
          {
             data: 'issueId',
             "render": function (data) {
-               return `
-                <a href="/issue/upsert?id=${data}" class="btn btn-info ms-2">
-                   <i class="bi bi-pencil-square"></i>Edit
-                </a>
-                <a onClick=DeleteIssue("/issue/delete/${data}") class="btn btn-danger ms-2">
-                   <i class="bi bi-trash"></i>Delete
-                </a>
-               `
+               if (isAdmin === "False") {
+                  return `
+                   <a href="/issue/upsert?id=${data}" class="btn btn-info ms-2 disabled">
+                      <i class="bi bi-pencil-square"></i>Edit
+                   </a>
+                   <a onClick=DeleteIssue("/issue/delete/${data}") class="btn btn-danger ms-2 disabled">
+                      <i class="bi bi-trash"></i>Delete
+                   </a>
+                  `
+               } else {
+                  return `
+                   <a href="/issue/upsert?id=${data}" class="btn btn-info ms-2">
+                      <i class="bi bi-pencil-square"></i>Edit
+                   </a>
+                   <a onClick=DeleteIssue("/issue/delete/${data}") class="btn btn-danger ms-2">
+                      <i class="bi bi-trash"></i>Delete
+                   </a>
+                  `
+               }
             }
          }
       ]

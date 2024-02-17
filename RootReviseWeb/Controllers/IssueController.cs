@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RootRevise.DataAccess.Repository.IRepository;
 using RootRevise.Models;
 using RootRevise.Models.ViewModels;
+using RootRevise.Utility;
 
 namespace RootReviseWeb.Controllers {
    public class IssueController : Controller {
@@ -16,12 +18,23 @@ namespace RootReviseWeb.Controllers {
          return View(issueList);
       }
 
+      [Authorize(Roles = SD.Role_Admin)]
       public IActionResult Upsert(int? id) {
          IssueVM issueVM = new() {
             ProjectList = _unitOfWork.ProjectRepository.GetAll().Select(
                u => new SelectListItem {
                   Text = u.Name,
                   Value = u.ProjectId.ToString(),
+               }),
+            StatusList = _unitOfWork.StatusRepository.GetAll().Select(
+               u => new SelectListItem {
+                  Text = u.Name,
+                  Value = u.StatusId.ToString(),
+               }),
+            PriorityList = _unitOfWork.PriorityRepository.GetAll().Select(
+               u => new SelectListItem {
+                  Text = u.Name,
+                  Value = u.PriorityId.ToString(),
                }),
             Issue = new Issue()
          };
@@ -34,11 +47,11 @@ namespace RootReviseWeb.Controllers {
       }
 
       [HttpPost]
+      [Authorize(Roles = SD.Role_Admin)]
       public IActionResult Upsert(IssueVM issueVM) {
          if (ModelState.IsValid) {
             if (issueVM.Issue.IssueId == 0) {
                issueVM.Issue.DateReported = DateTime.Now;
-               issueVM.Issue.Priority = PriorityLevel.Medium; 
                _unitOfWork.IssueRepository.Add(issueVM.Issue);
                TempData.Add("success", "The issue has been created successfully");
             } else {
@@ -52,6 +65,16 @@ namespace RootReviseWeb.Controllers {
                   Text = u.Name,
                   Value = u.ProjectId.ToString()
                });
+            issueVM.StatusList = _unitOfWork.StatusRepository.GetAll().Select(
+               u => new SelectListItem {
+                  Text = u.Name,
+                  Value = u.StatusId.ToString()
+               });
+            issueVM.PriorityList = _unitOfWork.PriorityRepository.GetAll().Select(
+               u => new SelectListItem {
+                  Text = u.Name,
+                  Value = u.PriorityId.ToString()
+               });
             return View(issueVM);
          }
          return RedirectToAction("Index");
@@ -60,10 +83,11 @@ namespace RootReviseWeb.Controllers {
       #region API CALL
       [HttpGet]
       public IActionResult GetAllIssues() {
-         List<Issue> issueList = _unitOfWork.IssueRepository.GetAll(includeProperties: "Project").ToList();
+         List<Issue> issueList = _unitOfWork.IssueRepository.GetAll(includeProperties: "Project,Status,Priority").ToList();
          return Json(new { data = issueList });
       }
 
+      [Authorize(Roles = SD.Role_Admin)]
       public IActionResult Delete(int id) {
          Issue? issueToBeDeleted = _unitOfWork.IssueRepository.Get(u => u.IssueId == id);
          if (issueToBeDeleted == null) {

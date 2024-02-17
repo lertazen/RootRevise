@@ -12,10 +12,16 @@ namespace RootRevise.DataAccess.Repository {
       public IIssueRepository IssueRepository { get; private set; }
       public IProjectRepository ProjectRepository { get; private set; }
 
+      public IStatusRepository StatusRepository { get; private set; }
+
+      public IPriorityRepository PriorityRepository { get; private set; }
+
       public UnitOfWork(ApplicationDbContext appDb) {
          _appDb = appDb;
          IssueRepository = new IssueRepository(_appDb);
          ProjectRepository = new ProjectRepository(_appDb);
+         StatusRepository = new StatusRepository(_appDb);
+         PriorityRepository = new PriorityRepository(_appDb);
       }
 
       public void Save() {

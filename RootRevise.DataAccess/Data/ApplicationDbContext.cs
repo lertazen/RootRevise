@@ -9,11 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using RootRevise.Models;
 
 namespace RootRevise.DataAccess.Data {
-   public class ApplicationDbContext : IdentityDbContext<IdentityUser>{
+   public class ApplicationDbContext : IdentityDbContext<IdentityUser> {
       public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
       public DbSet<Issue> Issues { get; set; }
       public DbSet<Project> Projects { get; set; }
+      public DbSet<Status> Statuss { get; set; }
+      public DbSet<Priority> Prioritys { get; set; }
 
       protected override void OnModelCreating(ModelBuilder modelBuilder) {
          base.OnModelCreating(modelBuilder);
@@ -23,13 +25,13 @@ namespace RootRevise.DataAccess.Data {
                IssueId = 1,
                Title = "Test",
                Description = "This is a test issue",
-               Status = IssueStatus.Open,
-               Priority = PriorityLevel.High,
                DateReported = DateTime.Now,
                DueDate = DateTime.Now.AddDays(10),
                ReporterId = 1,
                AssigneeId = 1,
                ProjectId = 1,
+               StatusId = 1,
+               PriorityId = 1
             }
          );
 
@@ -37,6 +39,36 @@ namespace RootRevise.DataAccess.Data {
             new Project {
                ProjectId = 1,
                Name = "Testing Project",
+            }
+         );
+
+         modelBuilder.Entity<Status>().HasData(
+            new Status {
+               StatusId = 1,
+               Name = "Open",
+            }, 
+            new Status {
+               StatusId = 2,
+               Name = "InProgress",
+            },
+            new Status {
+               StatusId= 3,
+               Name = "Closed",
+            }
+         );
+
+         modelBuilder.Entity<Priority>().HasData(
+            new Priority {
+               PriorityId = 1,
+               Name = "Low",
+            },
+            new Priority {
+               PriorityId = 2,
+               Name = "Medium",
+            },
+            new Priority {
+               PriorityId = 3,
+               Name = "High",
             }
          );
       }

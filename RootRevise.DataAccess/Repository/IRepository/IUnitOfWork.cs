@@ -8,6 +8,8 @@ namespace RootRevise.DataAccess.Repository.IRepository {
    public interface IUnitOfWork {
       IIssueRepository IssueRepository { get; }
       IProjectRepository ProjectRepository { get; }
+      IStatusRepository StatusRepository { get; }
+      IPriorityRepository PriorityRepository { get; }
 
       void Save();
    }
