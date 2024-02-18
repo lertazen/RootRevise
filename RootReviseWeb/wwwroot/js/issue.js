@@ -21,12 +21,8 @@ function LoadDataTable() {
       "ajax": { url: '/issue/getallissues' },
       "columns": [
          { data: 'title' },
-         {
-            data: 'status.name',
-         },
-         {
-            data: 'priority.name',
-         },
+         { data: 'status.name' },
+         { data: 'priority.name' },
          { data: 'project.name' },
          {
             data: 'dateReported',

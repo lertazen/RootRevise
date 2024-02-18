@@ -36,8 +36,13 @@ namespace RootRevise.DataAccess.Repository {
          return query.FirstOrDefault();
       }
 
-      public IEnumerable<T> GetAll(string? includeProperties = null) {
-         IQueryable<T> query = dbSet;
+      public IEnumerable<T> GetAll(Expression<Func<T, bool>>? predicate, string? includeProperties = null) {
+         IQueryable<T> query;
+         if(predicate != null) {
+            query = dbSet.Where(predicate);
+         } else {
+            query = dbSet;
+         }
          if (!string.IsNullOrEmpty(includeProperties)) { 
             foreach (var property in includeProperties.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries)) {
                query = query.Include(property);

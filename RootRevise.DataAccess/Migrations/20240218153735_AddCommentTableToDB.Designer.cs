@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RootRevise.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using RootRevise.DataAccess.Data;
 namespace RootRevise.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240218153735_AddCommentTableToDB")]
+    partial class AddCommentTableToDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,33 +254,7 @@ namespace RootRevise.DataAccess.Migrations
 
                     b.HasIndex("IssueId");
 
-                    b.ToTable("Comments");
-
-                    b.HasData(
-                        new
-                        {
-                            CommentId = 1,
-                            AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
-                            CommentText = "This is the test comment #1",
-                            DateCreated = new DateTime(2024, 2, 18, 11, 54, 13, 79, DateTimeKind.Local).AddTicks(2016),
-                            IssueId = 1
-                        },
-                        new
-                        {
-                            CommentId = 2,
-                            AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
-                            CommentText = "This is the test comment #2",
-                            DateCreated = new DateTime(2024, 2, 18, 11, 54, 13, 79, DateTimeKind.Local).AddTicks(2021),
-                            IssueId = 2
-                        },
-                        new
-                        {
-                            CommentId = 3,
-                            AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
-                            CommentText = "This is the test comment #3",
-                            DateCreated = new DateTime(2024, 2, 18, 11, 54, 13, 79, DateTimeKind.Local).AddTicks(2023),
-                            IssueId = 3
-                        });
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("RootRevise.Models.Issue", b =>
@@ -332,9 +309,9 @@ namespace RootRevise.DataAccess.Migrations
                         {
                             IssueId = 1,
                             AssigneeId = 1,
-                            DateReported = new DateTime(2024, 2, 18, 11, 54, 13, 79, DateTimeKind.Local).AddTicks(1747),
+                            DateReported = new DateTime(2024, 2, 18, 10, 37, 34, 693, DateTimeKind.Local).AddTicks(5598),
                             Description = "This is a test issue",
-                            DueDate = new DateTime(2024, 2, 28, 11, 54, 13, 79, DateTimeKind.Local).AddTicks(1806),
+                            DueDate = new DateTime(2024, 2, 28, 10, 37, 34, 693, DateTimeKind.Local).AddTicks(5649),
                             PriorityId = 1,
                             ProjectId = 1,
                             ReporterId = 1,

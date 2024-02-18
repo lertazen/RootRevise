@@ -10,7 +10,7 @@ namespace RootRevise.DataAccess.Repository.IRepository {
       IProjectRepository ProjectRepository { get; }
       IStatusRepository StatusRepository { get; }
       IPriorityRepository PriorityRepository { get; }
-
+      ICommentRepository CommentRepository { get; }
       void Save();
    }
 }

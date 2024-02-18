@@ -15,6 +15,7 @@ namespace RootRevise.DataAccess.Repository {
       public IStatusRepository StatusRepository { get; private set; }
 
       public IPriorityRepository PriorityRepository { get; private set; }
+      public ICommentRepository CommentRepository { get; private set; }
 
       public UnitOfWork(ApplicationDbContext appDb) {
          _appDb = appDb;
@@ -22,6 +23,7 @@ namespace RootRevise.DataAccess.Repository {
          ProjectRepository = new ProjectRepository(_appDb);
          StatusRepository = new StatusRepository(_appDb);
          PriorityRepository = new PriorityRepository(_appDb);
+         CommentRepository = new CommentRepository(_appDb);
       }
 
       public void Save() {

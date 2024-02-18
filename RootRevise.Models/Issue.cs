@@ -34,5 +34,7 @@ namespace RootRevise.Models {
       [ForeignKey("ProjectId")]
       [ValidateNever]
       public Project Project { get; set; }
+
+      public ICollection<Comment> Comments { get; }
    }
 }

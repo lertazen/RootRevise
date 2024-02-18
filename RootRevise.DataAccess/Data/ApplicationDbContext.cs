@@ -16,6 +16,7 @@ namespace RootRevise.DataAccess.Data {
       public DbSet<Project> Projects { get; set; }
       public DbSet<Status> Statuss { get; set; }
       public DbSet<Priority> Prioritys { get; set; }
+      public DbSet<Comment> Comments { get; set; }
 
       protected override void OnModelCreating(ModelBuilder modelBuilder) {
          base.OnModelCreating(modelBuilder);
@@ -69,6 +70,27 @@ namespace RootRevise.DataAccess.Data {
             new Priority {
                PriorityId = 3,
                Name = "High",
+            }
+         );
+
+         modelBuilder.Entity<Comment>().HasData(
+            new Comment {
+               CommentId = 1,
+               CommentText = "This is the test comment #1",
+               AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
+               IssueId = 1,
+            },
+            new Comment {
+               CommentId = 2,
+               CommentText = "This is the test comment #2",
+               AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
+               IssueId = 2,
+            },
+            new Comment {
+               CommentId = 3,
+               CommentText = "This is the test comment #3",
+               AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
+               IssueId = 3,
             }
          );
       }
