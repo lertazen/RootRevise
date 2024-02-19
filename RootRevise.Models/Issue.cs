@@ -35,6 +35,7 @@ namespace RootRevise.Models {
       [ValidateNever]
       public Project Project { get; set; }
 
+      [ValidateNever]
       public ICollection<Comment> Comments { get; }
    }
 }

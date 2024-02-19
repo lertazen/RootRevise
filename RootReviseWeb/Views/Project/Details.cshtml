@@ -1,0 +1,67 @@
+﻿@model Project
+
+<div class="d-flex justify-content-center align-items-center mb-4">
+   <div class="pagetitle">
+      <h3>Project Details</h3>
+   </div>
+</div>
+
+<section class="section">
+   <div class="row">
+
+      <div class="col-lg-12">
+
+         <a asp-controller="Project" asp-action="Index" class="link-info mb-3">
+            <i class="bi bi-skip-backward"></i> Back to List
+         </a>
+         <div class="card">
+            <div class="card-body">
+               <div class="d-flex col-12">
+                  <div class="card-title col-4">
+                     <small class="text-muted">Project Name </small>
+                     <h6>@Model.Name</h6>
+                  </div>
+                  <div class="card-title col-4">
+                     <small class="text-muted">Project Description </small>
+                     <h6>@Model.Description</h6>
+                  </div>
+                  <div class="card-title col-4">
+                     <small class="text-muted">Project ID </small>
+                     <h6 id="projectId">@Model.ProjectId</h6>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+   </div>
+
+   <div class="row">
+      <div class="col-lg-6">
+         <div class="card">
+            <div class="card-title ms-3 text-center">
+               <h6>
+                  Issues for this Project
+               </h6>
+            </div>
+            <div class="card-body mt-3">
+               <table id="issueTable" style="width: 100%">
+                  <thead>
+                     <tr>
+                        <th>Issue ID</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th></th>
+                     </tr>
+                  </thead>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+@section Scripts {
+   <script src="~/js/project.js"></script>
+}

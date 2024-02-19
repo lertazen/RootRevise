@@ -80,10 +80,21 @@ namespace RootReviseWeb.Controllers {
          return RedirectToAction("Index");
       }
 
+      public IActionResult Details(int issueId) {
+         Issue issue = _unitOfWork.IssueRepository.Get(i => i.IssueId == issueId, includeProperties: "Project,Status,Priority");
+         return View(issue);
+      }
+
       #region API CALL
       [HttpGet]
       public IActionResult GetAllIssues() {
          List<Issue> issueList = _unitOfWork.IssueRepository.GetAll(includeProperties: "Project,Status,Priority").ToList();
+         return Json(new { data = issueList });
+      }
+
+      [HttpGet]
+      public IActionResult GetIssuesByProjectId(int projectId) {
+         List<Issue> issueList = _unitOfWork.IssueRepository.GetAll(i => i.ProjectId == projectId, includeProperties: "Status").ToList();
          return Json(new { data = issueList });
       }
 

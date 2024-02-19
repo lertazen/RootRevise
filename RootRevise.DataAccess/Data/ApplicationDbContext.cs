@@ -40,6 +40,7 @@ namespace RootRevise.DataAccess.Data {
             new Project {
                ProjectId = 1,
                Name = "Testing Project",
+               Description = "This is a testing project"
             }
          );
 

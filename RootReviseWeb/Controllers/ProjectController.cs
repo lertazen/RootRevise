@@ -22,7 +22,11 @@ namespace RootReviseWeb.Controllers {
             Project project = _unitOfWork.ProjectRepository.Get(u => u.ProjectId == projectId);
             return View(project);
          }
+      }
 
+      public IActionResult Details(int projectId) {
+         Project project = _unitOfWork.ProjectRepository.Get(u => u.ProjectId==projectId);
+         return View(project);
       }
 
       [HttpPost]
