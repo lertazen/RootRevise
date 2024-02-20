@@ -73,27 +73,6 @@ namespace RootRevise.DataAccess.Data {
                Name = "High",
             }
          );
-
-         modelBuilder.Entity<Comment>().HasData(
-            new Comment {
-               CommentId = 1,
-               CommentText = "This is the test comment #1",
-               AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
-               IssueId = 1,
-            },
-            new Comment {
-               CommentId = 2,
-               CommentText = "This is the test comment #2",
-               AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
-               IssueId = 1,
-            },
-            new Comment {
-               CommentId = 3,
-               CommentText = "This is the test comment #3",
-               AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
-               IssueId = 1,
-            }
-         );
       }
    }
 }

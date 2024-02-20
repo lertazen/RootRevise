@@ -9,8 +9,8 @@ function LoadDataTable() {
    issueTable = $('#issueTable').DataTable({
       "ajax": { url: `/issue/getissuesbyprojectid?projectId=${projectId}` },
       "columns": [
-         { data: 'issueId'},
          { data: 'title' },
+         { data: 'description' },
          { data: 'status.name' },
          {
             data: 'dateReported',
@@ -25,12 +25,20 @@ function LoadDataTable() {
          {
             data: 'issueId',
             "render": function (data) {
-               console.log(data)
-               return `
-                   <a href="/issue/details?issueId=${data}" class="btn btn-info ms-2">
-                     <i class="bi bi-card-text me-2"></i>More Details
-                   </a>
-                   `
+               if (isAdmin == "True") {
+                  return `
+                      <a href="/issue/details?issueId=${data}" class="btn btn-info ms-2">
+                        <i class="bi bi-card-text me-2"></i>More Details
+                      </a>
+                      `
+               } else {
+                  return `
+                      <a href="/issue/details?issueId=${data}" class="btn btn-info ms-2 disabled">
+                        <i class="bi bi-card-text me-2"></i>More Details
+                      </a>
+                  `
+               }
+
             }
          }
       ]

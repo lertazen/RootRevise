@@ -18,14 +18,15 @@ namespace RootReviseWeb.Controllers {
          return View(commentsList);
       }
 
+      #region API CALL
       [HttpGet]
       public IActionResult GetCommentsByIssueId(int issueId) {
          List<Comment> commentsList = _unitOfWork.CommentRepository.GetAll(c => c.IssueId == issueId, includeProperties: "Author").ToList();
          return Json(new { data = commentsList });
       }
 
-      [Authorize]
       [HttpPost]
+      [Authorize]
       [ValidateAntiForgeryToken]
       public IActionResult AddComment(Comment comment) {
          if(ModelState.IsValid) {
@@ -42,5 +43,6 @@ namespace RootReviseWeb.Controllers {
             return Json(new {success=false, message="Something went wrong. Creating comment failed."});
          }
       }
+      #endregion
    }
 }

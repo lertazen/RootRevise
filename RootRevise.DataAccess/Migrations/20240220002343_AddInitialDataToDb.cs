@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RootRevise.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTables : Migration
+    public partial class AddInitialDataToDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,7 +71,8 @@ namespace RootRevise.DataAccess.Migrations
                 {
                     ProjectId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -236,6 +237,35 @@ namespace RootRevise.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    CommentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CommentText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IssueId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.CommentId);
+                    table.ForeignKey(
+                        name: "FK_Comments_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Issues_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "Issues",
+                        principalColumn: "IssueId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Prioritys",
                 columns: new[] { "PriorityId", "Name" },
@@ -248,8 +278,8 @@ namespace RootRevise.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Projects",
-                columns: new[] { "ProjectId", "Name" },
-                values: new object[] { 1, "Testing Project" });
+                columns: new[] { "ProjectId", "Description", "Name" },
+                values: new object[] { 1, "This is a testing project", "Testing Project" });
 
             migrationBuilder.InsertData(
                 table: "Statuss",
@@ -264,7 +294,7 @@ namespace RootRevise.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Issues",
                 columns: new[] { "IssueId", "AssigneeId", "DateReported", "Description", "DueDate", "PriorityId", "ProjectId", "ReporterId", "StatusId", "Title" },
-                values: new object[] { 1, 1, new DateTime(2024, 2, 17, 11, 17, 32, 625, DateTimeKind.Local).AddTicks(4644), "This is a test issue", new DateTime(2024, 2, 27, 11, 17, 32, 625, DateTimeKind.Local).AddTicks(4702), 1, 1, 1, 1, "Test" });
+                values: new object[] { 1, 1, new DateTime(2024, 2, 19, 19, 23, 42, 684, DateTimeKind.Local).AddTicks(1117), "This is a test issue", new DateTime(2024, 2, 29, 19, 23, 42, 684, DateTimeKind.Local).AddTicks(1175), 1, 1, 1, 1, "Test" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -306,6 +336,16 @@ namespace RootRevise.DataAccess.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_AuthorId",
+                table: "Comments",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_IssueId",
+                table: "Comments",
+                column: "IssueId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Issues_PriorityId",
                 table: "Issues",
                 column: "PriorityId");
@@ -340,13 +380,16 @@ namespace RootRevise.DataAccess.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Issues");
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Issues");
 
             migrationBuilder.DropTable(
                 name: "Prioritys");

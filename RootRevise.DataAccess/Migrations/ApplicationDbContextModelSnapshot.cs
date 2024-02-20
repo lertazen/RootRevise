@@ -252,32 +252,6 @@ namespace RootRevise.DataAccess.Migrations
                     b.HasIndex("IssueId");
 
                     b.ToTable("Comments");
-
-                    b.HasData(
-                        new
-                        {
-                            CommentId = 1,
-                            AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
-                            CommentText = "This is the test comment #1",
-                            DateCreated = new DateTime(2024, 2, 19, 17, 39, 38, 832, DateTimeKind.Local).AddTicks(7419),
-                            IssueId = 1
-                        },
-                        new
-                        {
-                            CommentId = 2,
-                            AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
-                            CommentText = "This is the test comment #2",
-                            DateCreated = new DateTime(2024, 2, 19, 17, 39, 38, 832, DateTimeKind.Local).AddTicks(7425),
-                            IssueId = 1
-                        },
-                        new
-                        {
-                            CommentId = 3,
-                            AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
-                            CommentText = "This is the test comment #3",
-                            DateCreated = new DateTime(2024, 2, 19, 17, 39, 38, 832, DateTimeKind.Local).AddTicks(7427),
-                            IssueId = 1
-                        });
                 });
 
             modelBuilder.Entity("RootRevise.Models.Issue", b =>
@@ -332,9 +306,9 @@ namespace RootRevise.DataAccess.Migrations
                         {
                             IssueId = 1,
                             AssigneeId = 1,
-                            DateReported = new DateTime(2024, 2, 19, 17, 39, 38, 832, DateTimeKind.Local).AddTicks(7020),
+                            DateReported = new DateTime(2024, 2, 19, 19, 23, 42, 684, DateTimeKind.Local).AddTicks(1117),
                             Description = "This is a test issue",
-                            DueDate = new DateTime(2024, 2, 29, 17, 39, 38, 832, DateTimeKind.Local).AddTicks(7087),
+                            DueDate = new DateTime(2024, 2, 29, 19, 23, 42, 684, DateTimeKind.Local).AddTicks(1175),
                             PriorityId = 1,
                             ProjectId = 1,
                             ReporterId = 1,

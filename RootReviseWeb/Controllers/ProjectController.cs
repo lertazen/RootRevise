@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RootRevise.DataAccess.Repository.IRepository;
 using RootRevise.Models;
 
@@ -24,6 +25,7 @@ namespace RootReviseWeb.Controllers {
          }
       }
 
+      [Authorize]
       public IActionResult Details(int projectId) {
          Project project = _unitOfWork.ProjectRepository.Get(u => u.ProjectId==projectId);
          return View(project);

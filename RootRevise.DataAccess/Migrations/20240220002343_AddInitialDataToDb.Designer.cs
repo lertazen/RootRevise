@@ -12,8 +12,8 @@ using RootRevise.DataAccess.Data;
 namespace RootRevise.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240218220309_AddDescriptionToProject")]
-    partial class AddDescriptionToProject
+    [Migration("20240220002343_AddInitialDataToDb")]
+    partial class AddInitialDataToDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -255,32 +255,6 @@ namespace RootRevise.DataAccess.Migrations
                     b.HasIndex("IssueId");
 
                     b.ToTable("Comments");
-
-                    b.HasData(
-                        new
-                        {
-                            CommentId = 1,
-                            AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
-                            CommentText = "This is the test comment #1",
-                            DateCreated = new DateTime(2024, 2, 18, 17, 3, 8, 242, DateTimeKind.Local).AddTicks(4617),
-                            IssueId = 1
-                        },
-                        new
-                        {
-                            CommentId = 2,
-                            AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
-                            CommentText = "This is the test comment #2",
-                            DateCreated = new DateTime(2024, 2, 18, 17, 3, 8, 242, DateTimeKind.Local).AddTicks(4623),
-                            IssueId = 2
-                        },
-                        new
-                        {
-                            CommentId = 3,
-                            AuthorId = "5ac5ba6a-4033-4e1d-8f84-49efab12cee2",
-                            CommentText = "This is the test comment #3",
-                            DateCreated = new DateTime(2024, 2, 18, 17, 3, 8, 242, DateTimeKind.Local).AddTicks(4624),
-                            IssueId = 3
-                        });
                 });
 
             modelBuilder.Entity("RootRevise.Models.Issue", b =>
@@ -335,9 +309,9 @@ namespace RootRevise.DataAccess.Migrations
                         {
                             IssueId = 1,
                             AssigneeId = 1,
-                            DateReported = new DateTime(2024, 2, 18, 17, 3, 8, 242, DateTimeKind.Local).AddTicks(4339),
+                            DateReported = new DateTime(2024, 2, 19, 19, 23, 42, 684, DateTimeKind.Local).AddTicks(1117),
                             Description = "This is a test issue",
-                            DueDate = new DateTime(2024, 2, 28, 17, 3, 8, 242, DateTimeKind.Local).AddTicks(4393),
+                            DueDate = new DateTime(2024, 2, 29, 19, 23, 42, 684, DateTimeKind.Local).AddTicks(1175),
                             PriorityId = 1,
                             ProjectId = 1,
                             ReporterId = 1,
