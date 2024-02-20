@@ -110,9 +110,10 @@ namespace RootReviseWeb.Areas.Identity.Pages.Account {
 
 
       public async Task OnGetAsync(string returnUrl = null) {
-         if (!_roleManager.RoleExistsAsync(SD.Role_Employee).GetAwaiter().GetResult()) {
+         if (!_roleManager.RoleExistsAsync(SD.Role_Developer).GetAwaiter().GetResult()) {
             _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
+            _roleManager.CreateAsync(new IdentityRole(SD.Role_Developer)).GetAwaiter().GetResult();
+            _roleManager.CreateAsync(new IdentityRole(SD.Role_Reporter)).GetAwaiter().GetResult();
          }
 
          Input = new() {
@@ -142,7 +143,7 @@ namespace RootReviseWeb.Areas.Identity.Pages.Account {
                if(!String.IsNullOrEmpty(Input.Role)) {
                   await _userManager.AddToRoleAsync(user, Input.Role);
                } else {
-                  await _userManager.AddToRoleAsync(user, SD.Role_Employee);
+                  await _userManager.AddToRoleAsync(user, SD.Role_Developer);
                }
 
                var userId = await _userManager.GetUserIdAsync(user);
