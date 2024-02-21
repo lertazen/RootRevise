@@ -11,6 +11,7 @@ namespace RootRevise.DataAccess.Repository.IRepository {
       IStatusRepository StatusRepository { get; }
       IPriorityRepository PriorityRepository { get; }
       ICommentRepository CommentRepository { get; }
+      IApplicationUserRepository ApplicationUserRepository { get; }
       void Save();
    }
 }

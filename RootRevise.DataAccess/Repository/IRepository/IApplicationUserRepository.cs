@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using RootRevise.Models;
 
 namespace RootRevise.DataAccess.Repository.IRepository {
-   public interface IApplicationUserRepository : IRepository<ApplicationUserRepository> {
+   public interface IApplicationUserRepository : IRepository<ApplicationUser> {
       public void Update(ApplicationUser applicationUser);
    }
 }

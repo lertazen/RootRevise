@@ -8,7 +8,7 @@ using RootRevise.DataAccess.Repository.IRepository;
 using RootRevise.Models;
 
 namespace RootRevise.DataAccess.Repository {
-   public class ApplicationUserRepository : Repository<ApplicationUserRepository>, IApplicationUserRepository {
+   public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicationUserRepository {
       private readonly ApplicationDbContext _appDb;
       public ApplicationUserRepository(ApplicationDbContext appDb) : base(appDb) {
          _appDb = appDb;
