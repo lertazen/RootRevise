@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using RootRevise.Models;
 using RootRevise.Utility;
 
 namespace RootReviseWeb.Areas.Identity.Pages.Account {
@@ -142,6 +143,8 @@ namespace RootReviseWeb.Areas.Identity.Pages.Account {
             if (result.Succeeded) {
                _logger.LogInformation("User created a new account with password.");
 
+               user.Name = Input.Name;
+
                if(!String.IsNullOrEmpty(Input.Role)) {
                   await _userManager.AddToRoleAsync(user, Input.Role);
                } else {
@@ -176,9 +179,9 @@ namespace RootReviseWeb.Areas.Identity.Pages.Account {
          return Page();
       }
 
-      private IdentityUser CreateUser() {
+      private ApplicationUser CreateUser() {
          try {
-            return Activator.CreateInstance<IdentityUser>();
+            return Activator.CreateInstance<ApplicationUser>();
          } catch {
             throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
                 $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
