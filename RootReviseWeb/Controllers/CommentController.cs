@@ -6,6 +6,7 @@ using RootRevise.DataAccess.Repository.IRepository;
 using RootRevise.Models;
 
 namespace RootReviseWeb.Controllers {
+   [Authorize]
    public class CommentController : Controller {
       private readonly IUnitOfWork _unitOfWork;
 
@@ -13,7 +14,7 @@ namespace RootReviseWeb.Controllers {
          _unitOfWork = unitOfWork;
       }
 
-      public IActionResult Index() { 
+      public IActionResult Index() {
          List<Comment> commentsList = _unitOfWork.CommentRepository.GetAll(includeProperties: "Author").ToList();
          return View(commentsList);
       }
@@ -26,10 +27,9 @@ namespace RootReviseWeb.Controllers {
       }
 
       [HttpPost]
-      [Authorize]
       [ValidateAntiForgeryToken]
       public IActionResult AddComment(Comment comment) {
-         if(ModelState.IsValid) {
+         if (ModelState.IsValid) {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -37,10 +37,10 @@ namespace RootReviseWeb.Controllers {
             _unitOfWork.CommentRepository.Add(comment);
             _unitOfWork.Save();
             TempData.Add("success", "The comment has been created.");
-            return Json(new {success = true, message = "The comment has been created."});
+            return Json(new { success = true, message = "The comment has been created." });
          } else {
             TempData.Add("error", "Something went wrong. Creating comment failed");
-            return Json(new {success=false, message="Something went wrong. Creating comment failed."});
+            return Json(new { success = false, message = "Something went wrong. Creating comment failed." });
          }
       }
       #endregion

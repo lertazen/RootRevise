@@ -7,6 +7,7 @@ using RootRevise.Models.ViewModels;
 using RootRevise.Utility;
 
 namespace RootReviseWeb.Controllers {
+   [Authorize]
    public class IssueController : Controller {
       private readonly IUnitOfWork _unitOfWork;
 

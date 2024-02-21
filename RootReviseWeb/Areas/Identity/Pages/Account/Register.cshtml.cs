@@ -106,6 +106,8 @@ namespace RootReviseWeb.Areas.Identity.Pages.Account {
          public string? Role { get; set; }
          [ValidateNever]
          public IEnumerable<SelectListItem> RoleList { get; set; }
+
+         public string Name { get; set; }
       }
 
 

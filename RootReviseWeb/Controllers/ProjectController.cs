@@ -4,6 +4,7 @@ using RootRevise.DataAccess.Repository.IRepository;
 using RootRevise.Models;
 
 namespace RootReviseWeb.Controllers {
+   [Authorize]
    public class ProjectController : Controller {
       private readonly IUnitOfWork _unitOfWork;
 
@@ -25,7 +26,6 @@ namespace RootReviseWeb.Controllers {
          }
       }
 
-      [Authorize]
       public IActionResult Details(int projectId) {
          Project project = _unitOfWork.ProjectRepository.Get(u => u.ProjectId==projectId);
          return View(project);

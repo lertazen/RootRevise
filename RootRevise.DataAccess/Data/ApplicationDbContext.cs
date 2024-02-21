@@ -17,6 +17,7 @@ namespace RootRevise.DataAccess.Data {
       public DbSet<Status> Statuss { get; set; }
       public DbSet<Priority> Prioritys { get; set; }
       public DbSet<Comment> Comments { get; set; }
+      public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
       protected override void OnModelCreating(ModelBuilder modelBuilder) {
          base.OnModelCreating(modelBuilder);
