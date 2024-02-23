@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RootRevise.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using RootRevise.DataAccess.Data;
 namespace RootRevise.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240223153148_AddApplicationUserReporterAndAssigneeToIssue")]
+    partial class AddApplicationUserReporterAndAssigneeToIssue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,7 +263,7 @@ namespace RootRevise.DataAccess.Migrations
 
                     b.HasIndex("IssueId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("RootRevise.Models.Issue", b =>
@@ -314,7 +317,7 @@ namespace RootRevise.DataAccess.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Issues", (string)null);
+                    b.ToTable("Issues");
 
                     b.HasData(
                         new
@@ -346,7 +349,7 @@ namespace RootRevise.DataAccess.Migrations
 
                     b.HasKey("PriorityId");
 
-                    b.ToTable("Prioritys", (string)null);
+                    b.ToTable("Prioritys");
 
                     b.HasData(
                         new
@@ -384,7 +387,7 @@ namespace RootRevise.DataAccess.Migrations
 
                     b.HasKey("ProjectId");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
 
                     b.HasData(
                         new
@@ -409,7 +412,7 @@ namespace RootRevise.DataAccess.Migrations
 
                     b.HasKey("StatusId");
 
-                    b.ToTable("Statuss", (string)null);
+                    b.ToTable("Statuss");
 
                     b.HasData(
                         new

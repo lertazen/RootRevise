@@ -28,7 +28,7 @@ function LoadDataTable() {
    issueTable = $('#commentTable').DataTable({
       "ajax": { url: `/comment/getcommentsbyissueid?issueId=${issueId}` },
       "columns": [
-         { data: 'author.userName'},
+         { data: 'author.name'},
          { data: 'commentText' },
          {
             data: 'dateCreated',

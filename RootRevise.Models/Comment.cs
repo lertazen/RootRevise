@@ -18,7 +18,7 @@ namespace RootRevise.Models {
       public string AuthorId { get; set; }
       [ForeignKey("AuthorId")]
       [ValidateNever]
-      public IdentityUser Author { get; set; }
+      public ApplicationUser Author { get; set; }
 
       public int IssueId { get; set; }
       [ForeignKey("IssueId")]

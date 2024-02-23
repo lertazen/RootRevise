@@ -82,7 +82,7 @@ namespace RootReviseWeb.Controllers {
       }
 
       public IActionResult Details(int issueId) {
-         Issue issue = _unitOfWork.IssueRepository.Get(i => i.IssueId == issueId, includeProperties: "Project,Status,Priority");
+         Issue issue = _unitOfWork.IssueRepository.Get(i => i.IssueId == issueId, includeProperties: "Project,Status,Priority,Reporter,Assignee");
          return View(issue);
       }
 

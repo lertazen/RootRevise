@@ -14,8 +14,6 @@ namespace RootRevise.Models {
       public string Description { get; set; }
       public DateTime DateReported { get; set; }
       public DateTime? DueDate { get; set; }
-      public int ReporterId { get; set; }
-      public int AssigneeId { get; set; }
 
       [DisplayName("Status")]
       public int StatusId { get; set; }
@@ -35,7 +33,12 @@ namespace RootRevise.Models {
       [ValidateNever]
       public Project Project { get; set; }
 
-      [ValidateNever]
-      public ICollection<Comment> Comments { get; }
+      public string ReporterId { get; set; }
+      [ForeignKey("ReporterId")]
+      public ApplicationUser Reporter { get; set; }
+
+      public string AssigneeId { get; set; }
+      [ForeignKey("AssigneeId")]
+      public ApplicationUser Assignee { get; set; }
    }
 }

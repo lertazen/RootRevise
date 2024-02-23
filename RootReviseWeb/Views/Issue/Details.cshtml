@@ -13,6 +13,7 @@
    </a>
 
    <div class="row col-lg-12">
+
       <div class="col-6">
          <div class="card">
             <div class="card-body">
@@ -56,6 +57,21 @@
                      <h6>Issue Priority </h6>
                      <p class="">
                         @Model.Priority.Name
+                     </p>
+                  </div>
+               </div>
+               <hr class="hr" />
+               <div class="d-flex col-12">
+                  <div class="col-6">
+                     <h6>Reporter</h6>
+                     <p class="">
+                        @Model.Reporter.Name
+                     </p>
+                  </div>
+                  <div class="col-6">
+                     <h6>Assignee </h6>
+                     <p class="">
+                        @Model.Assignee.Name
                      </p>
                   </div>
                </div>
