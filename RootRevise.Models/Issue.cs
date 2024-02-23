@@ -39,7 +39,7 @@ namespace RootRevise.Models {
       public ApplicationUser Reporter { get; set; }
 
       [DisplayName("Assignee")]
-      public string AssigneeId { get; set; }
+      public string? AssigneeId { get; set; }
       [ForeignKey("AssigneeId")]
       [ValidateNever]
       public ApplicationUser Assignee { get; set; }

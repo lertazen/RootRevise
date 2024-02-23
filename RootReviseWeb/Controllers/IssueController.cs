@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,7 +26,6 @@ namespace RootReviseWeb.Controllers {
          return View(issueList);
       }
 
-      [Authorize(Roles = SD.Role_Admin)]
       public IActionResult Upsert(int? id) {
          var developerList = new List<SelectListItem>();
          var usersInRole = _userManager.GetUsersInRoleAsync("Developer").GetAwaiter().GetResult();
@@ -57,6 +57,9 @@ namespace RootReviseWeb.Controllers {
             DeveloperList = developerList,
             Issue = new Issue()
          };
+         var claimsIdentity = (ClaimsIdentity)User.Identity;
+         var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+         issueVM.Issue.ReporterId = userId;
          if (id == null || id == 0) {
             return View(issueVM);
          } else {
@@ -66,8 +69,8 @@ namespace RootReviseWeb.Controllers {
       }
 
       [HttpPost]
-      [Authorize(Roles = SD.Role_Admin)]
       public IActionResult Upsert(IssueVM issueVM) {
+         bool isAdmin = User.IsInRole(SD.Role_Admin);
          var developerList = new List<SelectListItem>();
          var usersInRole = _userManager.GetUsersInRoleAsync("Developer").GetAwaiter().GetResult();
          foreach (var user in usersInRole) {
@@ -85,6 +88,10 @@ namespace RootReviseWeb.Controllers {
                _unitOfWork.IssueRepository.Add(issueVM.Issue);
                TempData.Add("success", "The issue has been created successfully");
             } else {
+               if (!isAdmin) {
+                  TempData.Add("error", "Unauthorized attempt to deit an issue.");
+                  return RedirectToAction("Index");
+               }
                _unitOfWork.IssueRepository.Update(issueVM.Issue);
                TempData.Add("success", "The issue has been updated successfully");
             }
