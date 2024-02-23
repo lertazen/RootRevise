@@ -21,6 +21,7 @@
 
                <form method="post" class="row g-3">
                   <input asp-for="Issue.IssueId" hidden />
+                  <input asp-for="Issue.ReporterId" hidden />
                   @if (Model.Issue.IssueId != 0) {
                      <input asp-for="Issue.DateReported" hidden />
                      <div class="card-title">
@@ -54,6 +55,12 @@
                      <label asp-for="Issue.PriorityId"></label>
                      <select asp-for="Issue.PriorityId" asp-items="@Model.PriorityList" class="form-select">
                         <option value="" disabled selected>--Select Priority--</option>
+                     </select>
+                  </div>
+                  <div class="col-12">
+                     <label asp-for="Issue.AssigneeId"></label>
+                     <select asp-for="Issue.AssigneeId" asp-items="@Model.DeveloperList" class="form-select">
+                        <option value="" disabled selected>--Select Assignee--</option>
                      </select>
                   </div>
 

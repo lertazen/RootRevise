@@ -35,10 +35,13 @@ namespace RootRevise.Models {
 
       public string ReporterId { get; set; }
       [ForeignKey("ReporterId")]
+      [ValidateNever]
       public ApplicationUser Reporter { get; set; }
 
+      [DisplayName("Assignee")]
       public string AssigneeId { get; set; }
       [ForeignKey("AssigneeId")]
+      [ValidateNever]
       public ApplicationUser Assignee { get; set; }
    }
 }

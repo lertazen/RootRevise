@@ -15,5 +15,7 @@ namespace RootRevise.Models.ViewModels {
       public IEnumerable<SelectListItem> StatusList { get; set; }
       [ValidateNever]
       public IEnumerable<SelectListItem> PriorityList { get; set; }
+      [ValidateNever]
+      public IEnumerable<SelectListItem> DeveloperList { get; set; }
    }
 }

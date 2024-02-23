@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RootRevise.DataAccess.Repository.IRepository;
@@ -10,10 +11,15 @@ namespace RootReviseWeb.Controllers {
    [Authorize]
    public class IssueController : Controller {
       private readonly IUnitOfWork _unitOfWork;
+      private readonly RoleManager<IdentityRole> _roleManager;
+      private readonly UserManager<IdentityUser> _userManager;
 
-      public IssueController(IUnitOfWork unitOfWork) {
+      public IssueController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager) {
          _unitOfWork = unitOfWork;
+         _roleManager = roleManager;
+         _userManager = userManager;
       }
+
       public IActionResult Index() {
          List<Issue> issueList = _unitOfWork.IssueRepository.GetAll(includeProperties: "Project").ToList();
          return View(issueList);
@@ -21,6 +27,17 @@ namespace RootReviseWeb.Controllers {
 
       [Authorize(Roles = SD.Role_Admin)]
       public IActionResult Upsert(int? id) {
+         var developerList = new List<SelectListItem>();
+         var usersInRole = _userManager.GetUsersInRoleAsync("Developer").GetAwaiter().GetResult();
+         foreach (var user in usersInRole) {
+            var appUser = user as ApplicationUser;
+            if (appUser != null) {
+               developerList.Add(new SelectListItem {
+                  Text = appUser.Name,
+                  Value = appUser.Id
+               });
+            }
+         }
          IssueVM issueVM = new() {
             ProjectList = _unitOfWork.ProjectRepository.GetAll().Select(
                u => new SelectListItem {
@@ -37,12 +54,13 @@ namespace RootReviseWeb.Controllers {
                   Text = u.Name,
                   Value = u.PriorityId.ToString(),
                }),
+            DeveloperList = developerList,
             Issue = new Issue()
          };
          if (id == null || id == 0) {
             return View(issueVM);
          } else {
-            issueVM.Issue = _unitOfWork.IssueRepository.Get(u => u.IssueId == id);
+            issueVM.Issue = _unitOfWork.IssueRepository.Get(u => u.IssueId == id, includeProperties: "Reporter");
             return View(issueVM);
          }
       }
@@ -50,6 +68,17 @@ namespace RootReviseWeb.Controllers {
       [HttpPost]
       [Authorize(Roles = SD.Role_Admin)]
       public IActionResult Upsert(IssueVM issueVM) {
+         var developerList = new List<SelectListItem>();
+         var usersInRole = _userManager.GetUsersInRoleAsync("Developer").GetAwaiter().GetResult();
+         foreach (var user in usersInRole) {
+            var appUser = user as ApplicationUser;
+            if (appUser != null) {
+               developerList.Add(new SelectListItem {
+                  Text = appUser.Name,
+                  Value = appUser.Id
+               });
+            }
+         }
          if (ModelState.IsValid) {
             if (issueVM.Issue.IssueId == 0) {
                issueVM.Issue.DateReported = DateTime.Now;
@@ -76,6 +105,7 @@ namespace RootReviseWeb.Controllers {
                   Text = u.Name,
                   Value = u.PriorityId.ToString()
                });
+            issueVM.DeveloperList = developerList;
             return View(issueVM);
          }
          return RedirectToAction("Index");
@@ -89,7 +119,7 @@ namespace RootReviseWeb.Controllers {
       #region API CALL
       [HttpGet]
       public IActionResult GetAllIssues() {
-         List<Issue> issueList = _unitOfWork.IssueRepository.GetAll(includeProperties: "Project,Status,Priority").ToList();
+         List<Issue> issueList = _unitOfWork.IssueRepository.GetAll(includeProperties: "Project,Status,Priority,Reporter,Assignee").ToList();
          return Json(new { data = issueList });
       }
 

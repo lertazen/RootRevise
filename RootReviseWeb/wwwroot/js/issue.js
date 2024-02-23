@@ -34,16 +34,8 @@ function LoadDataTable() {
                return "N/A";
             }
          },
-         {
-            data: 'dueDate',
-            "render": function (data) {
-               if (data) {
-                  var date = new Date(data);
-                  return date.toLocaleDateString();
-               }
-               return "N/A";
-            }
-         },
+         { data: 'reporter.name', },
+         { data: 'assignee.name', },
          {
             data: 'issueId',
             "render": function (data) {
