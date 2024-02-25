@@ -25,20 +25,11 @@ function LoadDataTable() {
          {
             data: 'issueId',
             "render": function (data) {
-               if (isAdmin == "True") {
                   return `
                       <a href="/issue/details?issueId=${data}" class="btn btn-info ms-2">
                         <i class="bi bi-card-text me-2"></i>More Details
                       </a>
                       `
-               } else {
-                  return `
-                      <a href="/issue/details?issueId=${data}" class="btn btn-info ms-2 disabled">
-                        <i class="bi bi-card-text me-2"></i>More Details
-                      </a>
-                  `
-               }
-
             }
          }
       ]

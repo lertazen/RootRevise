@@ -21,8 +21,4 @@
     <ProjectReference Include="..\RootRevise.Models\RootRevise.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

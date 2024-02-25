@@ -260,7 +260,7 @@ namespace RootRevise.DataAccess.Migrations
 
                     b.HasIndex("IssueId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("RootRevise.Models.Issue", b =>
@@ -272,7 +272,6 @@ namespace RootRevise.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IssueId"));
 
                     b.Property<string>("AssigneeId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateReported")
@@ -314,22 +313,7 @@ namespace RootRevise.DataAccess.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Issues", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            IssueId = 1,
-                            AssigneeId = "03f620cd-f77f-4b0c-a07d-74b8466c7920",
-                            DateReported = new DateTime(2024, 2, 23, 10, 31, 46, 605, DateTimeKind.Local).AddTicks(5970),
-                            Description = "This is a test issue",
-                            DueDate = new DateTime(2024, 3, 4, 10, 31, 46, 605, DateTimeKind.Local).AddTicks(6022),
-                            PriorityId = 1,
-                            ProjectId = 1,
-                            ReporterId = "03f620cd-f77f-4b0c-a07d-74b8466c7920",
-                            StatusId = 1,
-                            Title = "Test"
-                        });
+                    b.ToTable("Issues");
                 });
 
             modelBuilder.Entity("RootRevise.Models.Priority", b =>
@@ -346,7 +330,7 @@ namespace RootRevise.DataAccess.Migrations
 
                     b.HasKey("PriorityId");
 
-                    b.ToTable("Prioritys", (string)null);
+                    b.ToTable("Prioritys");
 
                     b.HasData(
                         new
@@ -384,7 +368,7 @@ namespace RootRevise.DataAccess.Migrations
 
                     b.HasKey("ProjectId");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
 
                     b.HasData(
                         new
@@ -409,7 +393,7 @@ namespace RootRevise.DataAccess.Migrations
 
                     b.HasKey("StatusId");
 
-                    b.ToTable("Statuss", (string)null);
+                    b.ToTable("Statuss");
 
                     b.HasData(
                         new
@@ -493,7 +477,7 @@ namespace RootRevise.DataAccess.Migrations
 
             modelBuilder.Entity("RootRevise.Models.Comment", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Author")
+                    b.HasOne("RootRevise.Models.ApplicationUser", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -514,9 +498,7 @@ namespace RootRevise.DataAccess.Migrations
                 {
                     b.HasOne("RootRevise.Models.ApplicationUser", "Assignee")
                         .WithMany()
-                        .HasForeignKey("AssigneeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AssigneeId");
 
                     b.HasOne("RootRevise.Models.Priority", "Priority")
                         .WithMany()

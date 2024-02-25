@@ -35,26 +35,37 @@ function LoadDataTable() {
             }
          },
          { data: 'reporter.name', },
-         { data: 'assignee.name', },
+         {
+            data: 'assignee.name',
+            "render": function (data) {
+               return data ? data : 'Not assigned';
+            }
+         },
          {
             data: 'issueId',
             "render": function (data) {
                if (isAdmin === "False") {
                   return `
                    <a href="/issue/upsert?id=${data}" class="btn btn-info ms-2 disabled">
-                      <i class="bi bi-pencil-square"></i>Edit
+                      <i class="bi bi-pencil-square me-1"></i>Edit
                    </a>
                    <a onClick=DeleteIssue("/issue/delete/${data}") class="btn btn-danger ms-2 disabled">
-                      <i class="bi bi-trash"></i>Delete
+                      <i class="bi bi-trash me-1"></i>Delete
+                   </a>
+                   <a href="/issue/details?issueId=${data}" class="btn btn-info ms-2">
+                      <i class="bi bi-ticket-detailed me-1"></i>Details
                    </a>
                   `
                } else {
                   return `
                    <a href="/issue/upsert?id=${data}" class="btn btn-info ms-2">
-                      <i class="bi bi-pencil-square"></i>Edit
+                      <i class="bi bi-pencil-square me-1"></i>Edit
                    </a>
                    <a onClick=DeleteIssue("/issue/delete/${data}") class="btn btn-danger ms-2">
-                      <i class="bi bi-trash"></i>Delete
+                      <i class="bi bi-trash me-1"></i>Delete
+                   </a>
+                   <a href="/issue/details?issueId=${data}" class="btn btn-info ms-2">
+                      <i class="bi bi-ticket-detailed me-1"></i>Details
                    </a>
                   `
                }

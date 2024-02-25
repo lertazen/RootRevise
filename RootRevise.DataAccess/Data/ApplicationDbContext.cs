@@ -22,21 +22,6 @@ namespace RootRevise.DataAccess.Data {
       protected override void OnModelCreating(ModelBuilder modelBuilder) {
          base.OnModelCreating(modelBuilder);
 
-         modelBuilder.Entity<Issue>().HasData(
-            new Issue {
-               IssueId = 1,
-               Title = "Test",
-               Description = "This is a test issue",
-               DateReported = DateTime.Now,
-               DueDate = DateTime.Now.AddDays(10),
-               ReporterId = "03f620cd-f77f-4b0c-a07d-74b8466c7920",
-               AssigneeId = "03f620cd-f77f-4b0c-a07d-74b8466c7920",
-               ProjectId = 1,
-               StatusId = 1,
-               PriorityId = 1
-            }
-         );
-
          modelBuilder.Entity<Project>().HasData(
             new Project {
                ProjectId = 1,

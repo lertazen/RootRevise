@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RootRevise.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddInitialDataToDb : Migration
+    public partial class InitialDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +32,8 @@ namespace RootRevise.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -208,15 +210,26 @@ namespace RootRevise.DataAccess.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateReported = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ReporterId = table.Column<int>(type: "int", nullable: false),
-                    AssigneeId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false),
                     PriorityId = table.Column<int>(type: "int", nullable: false),
-                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
+                    ReporterId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AssigneeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Issues", x => x.IssueId);
+                    table.ForeignKey(
+                        name: "FK_Issues_AspNetUsers_AssigneeId",
+                        column: x => x.AssigneeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Issues_AspNetUsers_ReporterId",
+                        column: x => x.ReporterId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Issues_Prioritys_PriorityId",
                         column: x => x.PriorityId,
@@ -257,13 +270,13 @@ namespace RootRevise.DataAccess.Migrations
                         column: x => x.AuthorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Comments_Issues_IssueId",
                         column: x => x.IssueId,
                         principalTable: "Issues",
                         principalColumn: "IssueId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.InsertData(
@@ -290,11 +303,6 @@ namespace RootRevise.DataAccess.Migrations
                     { 2, "InProgress" },
                     { 3, "Closed" }
                 });
-
-            migrationBuilder.InsertData(
-                table: "Issues",
-                columns: new[] { "IssueId", "AssigneeId", "DateReported", "Description", "DueDate", "PriorityId", "ProjectId", "ReporterId", "StatusId", "Title" },
-                values: new object[] { 1, 1, new DateTime(2024, 2, 19, 19, 23, 42, 684, DateTimeKind.Local).AddTicks(1117), "This is a test issue", new DateTime(2024, 2, 29, 19, 23, 42, 684, DateTimeKind.Local).AddTicks(1175), 1, 1, 1, 1, "Test" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -346,6 +354,11 @@ namespace RootRevise.DataAccess.Migrations
                 column: "IssueId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Issues_AssigneeId",
+                table: "Issues",
+                column: "AssigneeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Issues_PriorityId",
                 table: "Issues",
                 column: "PriorityId");
@@ -354,6 +367,11 @@ namespace RootRevise.DataAccess.Migrations
                 name: "IX_Issues_ProjectId",
                 table: "Issues",
                 column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Issues_ReporterId",
+                table: "Issues",
+                column: "ReporterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Issues_StatusId",
@@ -386,10 +404,10 @@ namespace RootRevise.DataAccess.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Issues");
 
             migrationBuilder.DropTable(
-                name: "Issues");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Prioritys");

@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using RootRevise.DataAccess.Repository.IRepository;
 using RootRevise.Models;
+using RootRevise.Utility;
 
 namespace RootReviseWeb.Controllers {
-   [Authorize]
+   [Authorize(Roles = SD.Role_Admin)]
    public class ProjectController : Controller {
       private readonly IUnitOfWork _unitOfWork;
 
