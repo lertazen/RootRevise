@@ -1,4 +1,4 @@
-﻿@model Issue
+﻿@model IssueDetailsVM
 
 <div class="d-flex justify-content-center align-items-center mb-4">
    <div class="pagetitle">
@@ -8,9 +8,17 @@
 
 
 <section class="section">
-   <a asp-controller="Project" asp-action="Details" asp-route-projectId="@Model.ProjectId" class="link-info mb-3">
-      <i class="bi bi-skip-backward"></i> Back to Project
-   </a>
+   @if (Model.ReturnUrl == "projectdetails") {
+
+      <a asp-controller="Project" asp-action="Details" asp-route-projectId="@Model.Issue.ProjectId" class="link-info mb-3">
+         <i class="bi bi-skip-backward"></i> Back to Project
+      </a>
+   } else {
+
+      <a asp-controller="Issue" asp-action="Index" asp-route-projectId="@Model.Issue.ProjectId" class="link-info mb-3">
+         <i class="bi bi-skip-backward"></i> Back to List
+      </a>
+   }
 
    <div class="row col-lg-12">
 
@@ -20,14 +28,14 @@
                <div class="col-12 mt-3">
                   <h6>Issue Title </h6>
                   <p class="">
-                     @Model.Title
+                     @Model.Issue.Title
                   </p>
                </div>
                <hr class="hr" />
                <div class="col-12">
                   <h6>Issue Description </h6>
                   <p class="">
-                     @Model.Description
+                     @Model.Issue.Description
                   </p>
                </div>
                <hr class="hr" />
@@ -35,13 +43,13 @@
                   <div class="col-6">
                      <h6>Project</h6>
                      <p class="">
-                        @Model.Project.Name
+                        @Model.Issue.Project.Name
                      </p>
                   </div>
                   <div class="col-6">
                      <h6>Created</h6>
                      <p class="">
-                        @Model.DateReported
+                        @Model.Issue.DateReported
                      </p>
                   </div>
                </div>
@@ -50,13 +58,13 @@
                   <div class="col-6">
                      <h6>Issue Status </h6>
                      <p class="">
-                        @Model.Status.Name
+                        @Model.Issue.Status.Name
                      </p>
                   </div>
                   <div class="col-6">
                      <h6>Issue Priority </h6>
                      <p class="">
-                        @Model.Priority.Name
+                        @Model.Issue.Priority.Name
                      </p>
                   </div>
                </div>
@@ -65,13 +73,13 @@
                   <div class="col-6">
                      <h6>Reporter</h6>
                      <p class="">
-                        @Model.Reporter.Name
+                        @Model.Issue.Reporter.Name
                      </p>
                   </div>
                   <div class="col-6">
                      <h6>Assignee </h6>
                      <p class="">
-                        @(Model.Assignee?.Name ?? "Not assigned")
+                        @(Model.Issue.Assignee?.Name ?? "Not assigned")
                      </p>
                   </div>
                </div>
@@ -86,7 +94,7 @@
                <div class="row mb-3">
                   <form id="addCommentForm" method="post">
                      @Html.AntiForgeryToken()
-                     <input asp-for="@Model.IssueId" id="issueId" hidden />
+                     <input asp-for="@Model.Issue.IssueId" id="issueId" hidden />
                      <label for="CommentText">Comment Message</label>
                      <textarea name="CommentText" type="text" class="form-control"></textarea>
                      <button class="btn btn-primary mt-3" type="submit">Add Comment</button>
@@ -111,8 +119,5 @@
 </section>
 
 @section Scripts {
-   <script>
-      var issueId = @Model.IssueId
-   </script>
    <script src="/js/comment.js"></script>
 }

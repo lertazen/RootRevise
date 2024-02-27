@@ -52,7 +52,7 @@ function LoadDataTable() {
                    <a onClick=DeleteIssue("/issue/delete/${data}") class="btn btn-danger ms-2 disabled">
                       <i class="bi bi-trash me-1"></i>Delete
                    </a>
-                   <a href="/issue/details?issueId=${data}" class="btn btn-info ms-2">
+                   <a href="/issue/details?issueId=${data}&source=issues" class="btn btn-info ms-2">
                       <i class="bi bi-ticket-detailed me-1"></i>Details
                    </a>
                   `
@@ -64,7 +64,7 @@ function LoadDataTable() {
                    <a onClick=DeleteIssue("/issue/delete/${data}") class="btn btn-danger ms-2">
                       <i class="bi bi-trash me-1"></i>Delete
                    </a>
-                   <a href="/issue/details?issueId=${data}" class="btn btn-info ms-2">
+                   <a href="/issue/details?issueId=${data}&source=issues" class="btn btn-info ms-2">
                       <i class="bi bi-ticket-detailed me-1"></i>Details
                    </a>
                   `

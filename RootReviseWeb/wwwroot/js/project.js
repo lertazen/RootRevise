@@ -26,7 +26,7 @@ function LoadDataTable() {
             data: 'issueId',
             "render": function (data) {
                   return `
-                      <a href="/issue/details?issueId=${data}" class="btn btn-info ms-2">
+                      <a href="/issue/details?issueId=${data}&source=projectdetails" class="btn btn-info ms-2">
                         <i class="bi bi-card-text me-2"></i>More Details
                       </a>
                       `

@@ -124,9 +124,12 @@ namespace RootReviseWeb.Controllers {
          return RedirectToAction("Index");
       }
 
-      public IActionResult Details(int issueId) {
-         Issue issue = _unitOfWork.IssueRepository.Get(i => i.IssueId == issueId, includeProperties: "Project,Status,Priority,Reporter,Assignee");
-         return View(issue);
+      public IActionResult Details(int issueId, string source) {
+         IssueDetailsVM issueDetailsVM = new() {
+            Issue = _unitOfWork.IssueRepository.Get(i => i.IssueId == issueId, includeProperties: "Project,Status,Priority,Reporter,Assignee"),
+            ReturnUrl = source
+         };
+         return View(issueDetailsVM);
       }
 
       #region API CALL
