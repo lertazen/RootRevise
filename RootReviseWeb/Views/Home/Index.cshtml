@@ -11,3 +11,12 @@
     <h2>Open issue: @Model.OpenIssueNumber</h2>
     <h2>High-priority issues: @Model.HighPriorityNumber</h2>
 </div>
+
+<div id="issueBarChart" class="d-flex justify-content-center"
+   data-open-issues="@Model.OpenIssueNumber"></div>
+
+<div id="test" data-high="@Model.HighPriorityNumber"></div>
+
+@section Scripts {
+   <script src="/js/home.js"></script>
+}
